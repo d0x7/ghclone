@@ -59,9 +59,10 @@ func checkVars() {
 	if accountType != "org" && accountType != "user" {
 		fmt.Println("Invalid account type provided")
 		os.Exit(1)
-	}
-	if accountType == "org" {
+	} else if accountType == "org" {
 		accountType = "orgs"
+	} else if accountType == "user" {
+		accountType = "users"
 	}
 
 	if startPage < 1 {
@@ -127,6 +128,9 @@ func checkVars() {
 
 func clone(page int) {
 	requestUrl := fmt.Sprintf("https://api.github.com/%s/%s/repos?page=%d&per_page=%d", accountType, account, page, perPage)
+	if verbose {
+		fmt.Printf("Request URL: %s\n", requestUrl)
+	}
 	resp, err := http.Get(requestUrl)
 	if err != nil || resp.StatusCode != 200 {
 		println("Error making request to GitHub API")
@@ -153,7 +157,7 @@ func clone(page int) {
 	}
 
 	if !all {
-		fmt.Printf("Cloning %d repositories from %s starting from page %d..\n", len(repos), account, page)
+		fmt.Printf("Cloning %d repositories from %s starting from page %d…\n", len(repos), account, page)
 	}
 
 	if !dryRun && outputDir != "." {
