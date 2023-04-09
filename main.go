@@ -152,7 +152,9 @@ func clone(page int) {
 		panic(err)
 	}
 
-	fmt.Printf("Cloning %d repositories from %s starting from page %d\n", len(repos), account, page)
+	if !all {
+		fmt.Printf("Cloning %d repositories from %s starting from page %d..\n", len(repos), account, page)
+	}
 
 	if !dryRun && outputDir != "." {
 		err := os.MkdirAll(outputDir, 0755)
@@ -162,7 +164,6 @@ func clone(page int) {
 	}
 
 	var waitGroup sync.WaitGroup
-
 	for _, repo := range repos {
 		if verbose {
 			fmt.Printf("Cloning %s...\n", repo.CloneURL)
@@ -174,11 +175,10 @@ func clone(page int) {
 			totalCloned++
 		}(repo)
 	}
-
 	waitGroup.Wait()
-	fmt.Printf("\n\nCloned %d repositories from %s!\n\n", len(repos), account)
 
 	if len(repos) == perPage {
+		fmt.Printf("\nCloned %d repositories from %s!\n\n", len(repos), account)
 		if all {
 			fmt.Printf("Cloning page %d of %s\n", page+1, account)
 			clone(page + 1)
@@ -198,7 +198,11 @@ func clone(page int) {
 			}
 		}
 	}
-	fmt.Printf("Done cloning a total of %d repos from %s. Bye bye!\n", totalCloned, account)
+	var allString string
+	if all {
+		allString = "all "
+	}
+	fmt.Printf("Done cloning %s%d repos from %s. Bye bye!\n", allString, totalCloned, account)
 	os.Exit(0)
 }
 
