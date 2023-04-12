@@ -1,6 +1,6 @@
 # GH Clone
 
-[![.github/workflows/release.yaml](https://github.com/d0x7/ghclone/actions/workflows/release.yaml/badge.svg)](https://github.com/d0x7/ghclone/actions/workflows/release.yaml)
+[![goreleaser](https://github.com/d0x7/ghclone/actions/workflows/goreleaser.yaml/badge.svg)](https://github.com/d0x7/ghclone/actions/workflows/goreleaser.yaml)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
 A simple cli tool that clones whole GitHub accounts or organizations.
