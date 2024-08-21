@@ -1,0 +1,17 @@
+version: 3
+
+tasks:
+  build:
+    desc: Build the application
+    cmds:
+      - go build -ldflags "-X 'xiam.li/meta.version=$(gitversion || echo \"v0.0.0-dev.0+dirty\")' -X 'xiam.li/meta.sha=$(git rev-parse HEAD)' -X 'xiam.li/meta.date=$(date -R)'" -o ghclone cmd/ghclone/*.go
+  install:
+    desc: Install the plugin
+    deps:
+      - build
+    cmds:
+      - cp ghclone $(go env GOPATH)/bin/ghclone
+  run:
+    desc: Run the application
+    cmds:
+      - go run cmd/ghclone/*.go -v
